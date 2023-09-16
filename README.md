@@ -1,5 +1,8 @@
 # A Android Library for YOLOv5/v7 Detect/Pose Inference Based on [NCNN](https://github.com/Tencent/ncnn)
- support [yolov5](https://github.com/ultralytics/yolov5),  [edgeai-yolov5](https://github.com/TexasInstruments/edgeai-yolov5/tree/yolo-pose),  [yolov7](https://github.com/WongKinYiu/yolov7),  [yolov8](https://github.com/ultralytics/ultralytics)
+ Support [yolov5](https://github.com/ultralytics/yolov5),  [edgeai-yolov5](https://github.com/TexasInstruments/edgeai-yolov5/tree/yolo-pose),  [yolov7](https://github.com/WongKinYiu/yolov7),  [yolov8](https://github.com/ultralytics/ultralytics)
+
+ System: Android 5.0+(21)
+
 
 # How to
 

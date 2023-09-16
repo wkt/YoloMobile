@@ -1,0 +1,15 @@
+{
+  "name": "yolov5s6_640_ti_lite_54p9_82p2",
+  "input_size": 640,
+  "param": "yolov5s6_640_ti_lite_54p9_82p2_opt.param",
+  "bin": "yolov5s6_640_ti_lite_54p9_82p2_opt.bin",
+  "box_thr": 0.5,
+  "iou_thr": 0.45,
+  "nkpt": 17,
+  "outputs": [
+    {"name": 399,"stride":8,"anchors": [19,27,  44,40,  38,94]},
+    {"name": 421,"stride":16,"anchors": [96,68,  86,152,  180,137]},
+    {"name": 443,"stride":32,"anchors": [140,301,  303,264,  238,542]},
+    {"name": 465,"stride":64,"anchors": [436,615,  739,380,  925,792]}
+  ]
+}

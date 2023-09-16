@@ -1,0 +1,15 @@
+{
+  "name": "yolov8n-pose-640",
+  "input_size": 640,
+  "param": "yolov8n-pose.param",
+  "bin": "yolov8n-pose.bin",
+  "box_thr": 0.25,
+  "iou_thr": 0.35,
+  "kp_thr": 0.5,
+  "nkpt": 17,
+  "ver": 8,
+  "input_name": "in0",
+  "outputs": [
+    {"name": "out0","stride":0,"anchors": [0,0]}
+  ]
+}

@@ -1,0 +1,64 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        minSdk 21
+        //noinspection ExpiredTargetSdkVersion
+        targetSdk 21
+        versionCode 2
+        versionName "1.0.1"
+        ndk {
+            //abiFilters "arm64-v8a", "x86_64"
+        }
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        debug{
+            externalNativeBuild {
+                cmake {
+                    cppFlags "-DDEBUG=1"
+                }
+            }
+        }
+        release {
+            externalNativeBuild {
+                cmake {
+                    cppFlags "-DDEBUG=0"
+                }
+            }
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+//    implementation 'androidx.appcompat:appcompat:1.2.0'
+//    implementation 'com.google.android.material:material:1.3.0'
+//    testImplementation 'junit:junit:4.+'
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+}
+
+try{
+    apply from: "${project.projectDir}/extra.gradle"
+}catch(Throwable e){
+    e.printStackTrace()
+}

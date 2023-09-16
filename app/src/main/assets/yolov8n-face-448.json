@@ -1,0 +1,15 @@
+{
+  "name": "yolov8n1-face-640",
+  "input_size": 384,
+  "param": "best_384.param",
+  "bin": "best_384.bin",
+  "box_thr": 0.33,
+  "iou_thr": 0.45,
+  "nkpt": 5,
+  "outputs": [
+    {"name": 661,"stride":8,"anchors": [8,11,  28,36,  69,93]},
+    {"name": 689,"stride":16,"anchors": [115,159,  155,214,  192,263]},
+    {"name": 717,"stride":32,"anchors": [226,307,  259,353,  296,407]},
+    {"name": 745,"stride":64,"anchors": [348,471,  420,562,  703,704]}
+  ]
+}

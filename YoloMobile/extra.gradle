@@ -1,0 +1,141 @@
+import java.text.SimpleDateFormat
+
+String buildDate()
+{
+    return new SimpleDateFormat("yyyyMMdd").format(new Date());
+}
+
+String buildTime()
+{
+    return new SimpleDateFormat("yyyy/MM/dd HH:mm:ss z").format(new Date());
+}
+
+List<String> getDevices(String adb)
+{
+    List<String> lines = Runtime.getRuntime().exec(adb + " devices").getInputStream().readLines()
+    List<String> res = new ArrayList<>();
+    for(String l:lines){
+        l = l.trim();
+        if(l.endsWith("device")){
+            res.add(l.replaceAll("[ \t]*device\$",""))
+        }
+    }
+    return res
+}
+
+void adbShellCommand(String adb, String cmd){
+    List<String>devs = getDevices(adb)
+    for(String d:devs){
+        cmd = adb + " -s "+d+" shell "+cmd
+        Process p = Runtime.getRuntime().exec(cmd)
+        p.waitFor()
+    }
+}
+
+///首字母大写
+String capitalizeLetters(String s)
+{
+    if(s == null)return s;
+    char[] cc = s.getChars();
+    cc[0]=cc[0].toUpperCase();
+    return new String(cc);
+}
+
+///将首字母和[-_ \t\r\n]紧跟的字母大写，并剔除[-_ \t\r\n]
+String capitalizeLetters(String s,boolean allSpace)
+{
+    if(allSpace && s != null && s.trim().length()>0){
+        s=s.trim()
+        String[] vv=s.split("[-_ \t\r\n]")
+        StringBuffer sb=new StringBuffer()
+        for(int i=0;i<vv.length;i++){
+            String t=capitalizeLetters(vv[i])
+            if(i == 0){
+                sb.append(t)
+            } else if(t == vv[i]){
+                sb.append("_")
+                sb.append(t)
+            }else{
+                sb.append(t)
+            }
+        }
+        return sb.toString();
+    }else {
+        return capitalizeLetters(s);
+    }
+}
+
+String underlineAndLowerCase(String s){
+    StringBuffer sb=new StringBuffer()
+    boolean  prevUp = true;
+    for(int i=0;i<s.length();i++){
+        String v = s.substring(i,i+1);
+        boolean  isUp = v == v.toUpperCase();
+        if(isUp){
+            if(!prevUp)sb.append("_");
+        }
+        sb.append(v)
+        prevUp = isUp;
+    }
+    return sb.toString().toLowerCase().replaceAll('[-_]+',"_");
+}
+
+boolean  isAndroidLibrary()
+{
+    return project.getPluginManager().hasPlugin("com.android.library");
+}
+
+//改进打包后生成的文件名格式
+android {
+
+    if(isAndroidLibrary()){
+        android.libraryVariants.all { variant ->
+            variant.outputs.all { //output ->
+                //print "variant: "+variant+"\r\n"
+                String vn=android.defaultConfig.versionName
+                String vc=android.defaultConfig.versionCode
+                //com.android.build.gradle.internal.api.LibraryVariantImpl
+                String pName = underlineAndLowerCase("${project.rootProject.name}")+"_${variant.name}"
+                outputFileName= "${pName}_${buildDate()}_v${vn}r${vc}.aar"
+            }
+        }
+    }else{
+        android.applicationVariants.all { variant ->
+            variant.outputs.all { // output ->
+                String pName = capitalizeLetters("${project.rootProject.name}_${variant.name}",true)
+                String sn=variant.isSigningReady()?"":"_unsigned"
+                outputFileName= "${pName}_${buildDate()}_v${variant.versionName}r${variant.versionCode}${sn}.apk"
+            }
+        }
+    }
+
+}
+
+
+project.afterEvaluate {
+    android.defaultConfig.buildConfigField("String","BUILD_TIME","\""+buildTime()+"\"")
+    android.libraryVariants.all { variant ->
+        variant.outputs.each { output ->
+            String n=capitalizeLetters("${variant.name}")
+            tasks.findByName("assemble"+n).doLast {
+                print "\tOutput File: "+output.outputFile.absolutePath+"\r\n"
+            }
+            def t = tasks.findByName("install"+n)
+            if(t!=null && variant.signingReady){
+                t.doFirst {
+                    print "\tOutput File: "+output.outputFile.absolutePath+"\r\n"
+                }
+                t.doLast {
+                    String adb = android.getAdbExe();
+                    adbShellCommand(adb, "monkey -p ${variant.applicationId} 1 1")
+                }
+            }
+            t = tasks.findByName("generate"+n+"Resources")
+            if(t!=null){
+                t.doFirst {
+                    //todo
+                }
+            }
+        }
+    }
+}

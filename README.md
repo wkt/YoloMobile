@@ -77,5 +77,7 @@ implementation files('libs/yolo_mobile_release_2023xxyyzz_V1.0r1.aar')
 
 # Demo
  Download demo [apk](releases/download/v1.0.2r3/app-debug.apk)
- screenshot:
- [img]
+ 
+ Screenshot:
+ <img src="images/20230918_214448.png">
+ 

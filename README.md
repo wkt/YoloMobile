@@ -74,3 +74,8 @@ implementation files('libs/yolo_mobile_release_2023xxyyzz_V1.0r1.aar')
         YoloInfer.draw(canvas,boxes,paint);
 
 ```
+
+# Demo
+ Download demo [apk](releases/download/v1.0.2r3/app-debug.apk)
+ screenshot:
+ [img]

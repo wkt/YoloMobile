@@ -30,7 +30,7 @@ android {
 
 dependencies {
 
-    implementation files('libs/yolo_mobile_release_20230916_v1.0.1r2.aar')
+    implementation files('libs/yolo_mobile_release_20230916_v1.0.2r3.aar')
     //implementation project(path: ':YoloMobile')
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'

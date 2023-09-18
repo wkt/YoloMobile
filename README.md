@@ -6,7 +6,7 @@
 
 # How to
 
-1 download the [.aar](releases) file
+1 download the [.aar](/wkt/YoloMobile/releases) file
 
 2 put .aar file in app/libs directory
 
@@ -76,7 +76,7 @@ implementation files('libs/yolo_mobile_release_2023xxyyzz_V1.0r1.aar')
 ```
 
 # Demo
- Download demo [apk](releases/download/v1.0.2r3/app-debug.apk)
+ Download demo [apk](/wkt/YoloMobile/releases/download/v1.0.2r3/app-debug.apk)
  
  Screenshot:
  <img src="images/20230918_214448.png">

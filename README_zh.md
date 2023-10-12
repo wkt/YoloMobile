@@ -1,24 +1,26 @@
-# A Android Library for YOLOv5/v7/v8 Detect/Pose Inference Based on [NCNN](https://github.com/Tencent/ncnn)
- Support [yolov5](https://github.com/ultralytics/yolov5),  [edgeai-yolov5](https://github.com/TexasInstruments/edgeai-yolov5/tree/yolo-pose),  [yolov7](https://github.com/WongKinYiu/yolov7),  [yolov8](https://github.com/ultralytics/ultralytics)
+# 基于[NCNN](https://github.com/Tencent/ncnn)实现在Android App调用YOLOv5/v7/v8的目标检测/关键点模型,进行推理预测
 
- System: Android 5.0+(21)
+ 支持 [yolov5](https://github.com/ultralytics/yolov5),  [edgeai-yolov5](https://github.com/TexasInstruments/edgeai-yolov5/tree/yolo-pose),  [yolov7](https://github.com/WongKinYiu/yolov7),  [yolov8](https://github.com/ultralytics/ultralytics)
 
-[中文](README_zh.md)
+ 系统: Android 5.0+(21)
 
-# How to
+[English](README.md)
 
-1 download the [.aar](https://github.com/wkt/YoloMobile/releases) file
 
-2 put .aar file in app/libs directory
+# 如何搞事情?
 
-3 edit app/build.gradle
+1 下载[.aar](https://github.com/wkt/YoloMobile/releases)文件
+
+2 把.aar放到自己Android相关模块的libs目录(例如:app/libs)下
+
+3 编辑app/build.gradle, 添加
 ```
 implementation files('libs/yolo_mobile_release_2023xxyyzz_V1.0r1.aar')
 ```
 
-4 put ncnn .bin and .param into assets directory
+4 把ncnn格式模型文件.bin and .param放到assets目录下
 
-5 create new named 'yolo_cfg.json'
+5 在assets目录下,创建文件'yolo_cfg.json'
 ```
 {
   "name": "yolov8n",
@@ -47,24 +49,24 @@ implementation files('libs/yolo_mobile_release_2023xxyyzz_V1.0r1.aar')
 
 }
 ```
-Key value:
+字段说明:
 
-  input_size input image size (must be w=h), for example: 640
+  input_size 模型输入图像大小, 目前仅支持w=h, 例如: 640
 
-  input_name input node name
+  input_name 模型入口节点名称
 
-  outputs    list of output node
+  outputs    模型出口节点名称列表
 
 可选字段:
 
-  ver     -- yolo v8 need set to 8
+  ver     -- yolo v8需要设为8
 
-  names   -- class names
+  names   -- 类别名称
 
-  nkpt    -- number of keypoint, for example(coco): 17
+  nkpt    -- 目标关键点数量, 例如: 17
 
 
-6 call the model
+6 调用模型, 进行推理预测
 ```
 
         infer = new YoloInfer(ctx);
@@ -76,13 +78,14 @@ Key value:
 
 ```
 
-# Demo
- Download demo [apk](https://github.com/wkt/YoloMobile/releases/download/v1.0.2r3/app-debug.apk)
+# 演示Demo
+ 演示Demo的[apk](https://github.com/wkt/YoloMobile/releases/download/v1.0.2r3/app-debug.apk)
  
- Screenshot:
+ 截图:
  <img src="images/20230918_214448.png">
- 
-# Rebuild .aar file
+
+
+# 重建.aar文件
 ```
 bash gradlew :YoloMobile:assembleRelease
 ```

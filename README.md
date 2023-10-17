@@ -49,13 +49,13 @@ implementation files('libs/yolo_mobile_release_2023xxyyzz_V1.0r1.aar')
 ```
 Key value:
 
-  input_size input image size (must be w=h), for example: 640
+  input_size -- input image size (must be w=h), for example: 640
 
-  input_name input node name
+  input_name -- input node name
 
-  outputs    list of output node
+  outputs    --- list of output node
 
-可选字段:
+Optional key value:
 
   ver     -- yolo v8 need set to 8
 

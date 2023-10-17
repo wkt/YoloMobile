@@ -32,7 +32,7 @@ YoloInfer_release(JNIEnv *env, jobject thiz) {
     if(yolo == nullptr)return;
     LOGD(__FUNCTION__);
     delete yolo;
-    env->SetLongField(thiz,objFieldId, 0);
+    env->SetLongField(thiz,objFieldId, (jlong)0);
 }
 
 static void JNICALL

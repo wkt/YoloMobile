@@ -51,11 +51,11 @@ implementation files('libs/yolo_mobile_release_2023xxyyzz_V1.0r1.aar')
 ```
 字段说明:
 
-  input_size 模型输入图像大小, 目前仅支持w=h, 例如: 640
+  input_size -- 模型输入图像大小, 目前仅支持w=h, 例如: 640
 
-  input_name 模型入口节点名称
+  input_name -- 模型入口节点名称
 
-  outputs    模型出口节点名称列表
+  outputs    -- 模型出口节点名称列表
 
 可选字段:
 

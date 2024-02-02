@@ -76,6 +76,11 @@ Optional key value:
 
 ```
 
+# Proguard
+```
+-keep class com.weiketing.yolomobile.YoloInfer { *; }
+```
+
 # Demo
  Download demo [apk](https://github.com/wkt/YoloMobile/releases/download/v1.0.2r3/app-debug.apk)
  

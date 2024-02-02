@@ -77,6 +77,10 @@ implementation files('libs/yolo_mobile_release_2023xxyyzz_V1.0r1.aar')
         YoloInfer.draw(canvas,boxes,paint);
 
 ```
+# 混淆
+```
+-keep class com.weiketing.yolomobile.YoloInfer { *; }
+```
 
 # 演示Demo
  演示Demo的[apk](https://github.com/wkt/YoloMobile/releases/download/v1.0.2r3/app-debug.apk)

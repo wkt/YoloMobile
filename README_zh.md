@@ -1,4 +1,4 @@
-# 基于[NCNN](https://github.com/Tencent/ncnn)实现在Android App调用YOLOv5/v7/v8的目标检测/关键点模型,进行推理预测
+# 基于[NCNN](https://github.com/Tencent/ncnn)实现在Android App调用YOLOv5/YOLOv7/YOLOv8的目标检测/关键点模型,进行推理预测
 
  支持 [yolov5](https://github.com/ultralytics/yolov5),  [edgeai-yolov5](https://github.com/TexasInstruments/edgeai-yolov5/tree/yolo-pose),  [yolov7](https://github.com/WongKinYiu/yolov7),  [yolov8](https://github.com/ultralytics/ultralytics)
 

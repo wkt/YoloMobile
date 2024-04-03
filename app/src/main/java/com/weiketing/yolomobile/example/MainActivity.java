@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 testFPS = false;
                 doNext();
                 btnFPS.setEnabled(true);
+                tvInfo.setText("");
             }
         });
         btnFPS.setOnClickListener(new View.OnClickListener() {

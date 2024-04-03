@@ -1,0 +1,15 @@
+{
+  "name": "yolov8n-pose-384",
+  "input_size": 384,
+  "param": "yp8n-384.param",
+  "bin": "yp8n-384.bin",
+  "box_thr": 0.25,
+  "iou_thr": 0.35,
+  "kp_thr": 0.5,
+  "nkpt": 17,
+  "ver": 8,
+  "input_name": "in0",
+  "outputs": [
+    {"name": "out0","stride":0,"anchors": [0,0]}
+  ]
+}

@@ -395,7 +395,7 @@ int Yolo::forward(const ncnn::Mat &inp, std::vector<BBox> &boxes) {
     const float norm_vals[3] = {1 / 255.f, 1 / 255.f, 1 / 255.f};
     in.substract_mean_normalize(nullptr, norm_vals);
 
-    std::vector<ncnn::Mat>outs;
+    std::vector<ncnn::Mat> outs;
     std::vector<Yolo::BBox> proposals;
 
     ncnn::Extractor ex = impl->net.create_extractor();

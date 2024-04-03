@@ -82,7 +82,10 @@ String underlineAndLowerCase(String s){
 
 boolean  isAndroidLibrary()
 {
-    return project.getPluginManager().hasPlugin("com.android.library");
+    boolean _app = project.getPluginManager().hasPlugin('com.android.application')
+    boolean _lib = project.getPluginManager().hasPlugin("com.android.library")
+    if(_app)return false;
+    return _lib;
 }
 
 //改进打包后生成的文件名格式
@@ -114,7 +117,13 @@ android {
 
 project.afterEvaluate {
     android.defaultConfig.buildConfigField("String","BUILD_TIME","\""+buildTime()+"\"")
-    android.libraryVariants.all { variant ->
+    var variants;
+    if(isAndroidLibrary()){
+        variants = android.libraryVariants
+    }else{
+        variants = android.applicationVariants
+    }
+    variants.all { variant ->
         variant.outputs.each { output ->
             String n=capitalizeLetters("${variant.name}")
             tasks.findByName("assemble"+n).doLast {

@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             "yolov8n-face-384",
             "yolov8n1-face-448",
             "yolov5s6_640_ti_lite_54p9_82p2_opt",
-            "yolov5n",
+            "yolov5n"
     };
 
     @Override
@@ -175,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
                     names.add(n);
                 }
             }
+            names.add("yolov5n-no-json");
             models = names.toArray(new String[0]);
         } catch (IOException e) {
             e.printStackTrace();
@@ -257,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
         infer.setBinName("last.bin");
         infer.loadModel();
         infer.setBoxThreshold(0.45f);
-        infer.setIOUThreshold(0.35f);
+        infer.setIouThreshold(0.35f);
         infer.setNumKeypoint(5);
         infer.addOutput("397",8,new Float[]{10f,13f, 16f,30f, 33f,23f});
         infer.addOutput("458",16,new Float[]{30f,61f, 62f,45f, 59f,119f});
@@ -266,10 +267,23 @@ public class MainActivity extends AppCompatActivity {
          */
         //infer.loadFromConfigAssets("cfg.json");
         modeName.setText("Model cfg: "+name);
-        if (!name.toLowerCase().endsWith(".json")){
-            name += ".json";
+        if(name.toLowerCase().endsWith("no-json")){
+            infer.setInputSize(384);
+            infer.setParamName("yolov5n_opt.param");
+            infer.setBinName("yolov5n_opt.bin");
+            infer.loadModel();
+            infer.setBoxThreshold(0.45f);
+            infer.setIouThreshold(0.35f);
+            infer.setNumKeypoint(0);
+            infer.addOutput("345",8,new Float[]{10f,13f, 16f,30f, 33f,23f});
+            infer.addOutput("365",16,new Float[]{30f,61f, 62f,45f, 59f,119f});
+            infer.addOutput("385",32,new Float[]{116f,90f, 156f,198f, 373f,326f});
+        }else {
+            if (!name.toLowerCase().endsWith(".json")) {
+                name += ".json";
+            }
+            infer.loadFromConfigAssets(name);
         }
-        infer.loadFromConfigAssets(name);
     }
 
 }

@@ -289,11 +289,13 @@ public class YoloInfer {
 
     public void setInputSize(int inputSize) {
         this.inputSize = inputSize;
+        if (_obj == 0)return;
         _update("input_size",inputSize);
     }
 
     public void setInputName(String inputName) {
         this.inputName = inputName;
+        if (_obj == 0)return;
         _update("input_name",inputName);
     }
 

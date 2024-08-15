@@ -39,8 +39,9 @@ static void JNICALL
 YoloInfer_init(JNIEnv *env, jobject thiz)
 {
     LOGD(__FUNCTION__);
-    if(objFieldId == nullptr)
-        objFieldId = env->GetFieldID(env->GetObjectClass(thiz),"_obj", "J");
+    if(objFieldId == nullptr) {
+        objFieldId = env->GetFieldID(env->GetObjectClass(thiz), "_obj", "J");
+    }
     YoloInfer_release(env,thiz);
     Yolo *yolo = new Yolo;
     env->SetLongField(thiz, objFieldId, reinterpret_cast<jlong>(yolo));
@@ -51,6 +52,10 @@ YoloInfer_loadModel(JNIEnv *env, jobject thiz, jobject asset,
                     jstring param, jstring bin){
     LOGD(__FUNCTION__);
     Yolo* yolo = reinterpret_cast<Yolo *>(env->GetLongField(thiz, objFieldId));
+    if(yolo == nullptr){
+        env->FatalError("You must call .init first");
+        return;
+    }
     jboolean isCopy = JNI_FALSE;
     const char *p = env->GetStringUTFChars(param,&isCopy);
     const char *b = env->GetStringUTFChars(bin,&isCopy);
@@ -80,15 +85,24 @@ YoloInfer_loadModel_fullPath(JNIEnv *env, jobject thiz, jstring param_path, jstr
 
 static jfloatArray JNICALL
 YoloInfer_forward(JNIEnv *env, jobject thiz, jobject img) {
-    if(objFieldId == nullptr)return nullptr;
+    if(objFieldId == nullptr){
+        env->FatalError("You must call .init first");
+        return nullptr;
+    }
     Yolo* yolo = reinterpret_cast<Yolo *>(env->GetLongField(thiz, objFieldId));
+    if(yolo == nullptr){
+        env->FatalError("You must call .init first");
+        return nullptr;
+    }
+    std::vector<float> numbers;
+    jfloatArray array = nullptr;
+    size_t n = 0;
+    size_t num = 0;
     ncnn::Mat bm = ncnn::Mat::from_android_bitmap(env,img,ncnn::Mat::PIXEL_RGBA2RGB);
     std::vector<Yolo::BBox>boxes;
     yolo->forward(bm,boxes);
-    int n = boxes.size();
+    n = boxes.size();
     int s = 0;
-    std::vector<float> numbers;
-    jfloatArray array = nullptr;
     /// LOGD("forward, boxes: %d",n);
     if(n>0){
         for(auto &b:boxes){
@@ -111,10 +125,13 @@ YoloInfer_forward(JNIEnv *env, jobject thiz, jobject img) {
             }
         }
     }
-    array = env->NewFloatArray(2+numbers.size());
+    num = numbers.size();
+    array = env->NewFloatArray(2+num);
     float buf[]={static_cast<float>(n),static_cast<float>(s)};
     env->SetFloatArrayRegion(array,0,2,buf);
-    env->SetFloatArrayRegion(array,2,numbers.size(),numbers.data());
+    if(num>0){
+        env->SetFloatArrayRegion(array,2,static_cast<jsize>(num),numbers.data());
+    }
     return array;
 }
 
@@ -122,40 +139,44 @@ static void JNICALL
 YoloInfer_update(JNIEnv *env, jobject thiz, jstring key,
                  jstring value) {
     jboolean isCopy = JNI_FALSE;
+    if(objFieldId == nullptr){
+        env->FatalError("You must call .init first");
+        return;
+    }
+    Yolo* yolo = reinterpret_cast<Yolo *>(env->GetLongField(thiz, objFieldId));
+    if(yolo == nullptr){
+        env->FatalError("You must call .init first");
+        return;
+    }
     const char *k = env->GetStringUTFChars(key,&isCopy);
     const char *v = env->GetStringUTFChars(value,&isCopy);
-    if(objFieldId == nullptr){
-        //LOGW("You must call init first; k=%s,v=%s",k,v);
-        return;
+
+    //LOGE("k: %s, v: %s, objFieldId: %p, yolo: %p,",k,v,objFieldId,yolo);
+    if(strcmp("input_size",k) == 0){
+        yolo->inputSize(atoi(v));
+    } else if(strcmp("input_name",k) == 0){
+        yolo->inputName(v);
+    }else if(strcmp("box_thr",k) == 0){
+        yolo->boxThreshold(atof(v));
+    }else if(strcmp("iou_thr",k) == 0){
+        yolo->iouThreshold(atof(v));
+    }else if(strcmp("output_name",k) == 0){
+        yolo->outputName(v);
+    }else if(strcmp("output_stride",k) == 0){
+        yolo->outputStride(atoi(v));
+    }else if(strcmp("output_anchors",k) == 0){
+        const std::vector<std::string> &as = split(v, ",");
+        ncnn::Mat anchors(as.size());
+        for(int i=0;i<as.size();i++)anchors[i]=atoi(as[i].data());
+        yolo->outputAnchors(anchors);
+    }else if(strcmp("nkpt",k) == 0){
+        yolo->numKeypoint(atoi(v));
+    }else if(strcmp(k,"ver") == 0) {
+        yolo->ver(atoi(v));
+    }else if(strcmp(k,"kp_thr") == 0) {
+        yolo->kpThreshold(atof(v));
     }else{
-        Yolo* yolo = reinterpret_cast<Yolo *>(env->GetLongField(thiz, objFieldId));
-        //LOGE("k: %s, v: %s, objFieldId: %p, yolo: %p,",k,v,objFieldId,yolo);
-        if(strcmp("input_size",k) == 0){
-            yolo->inputSize(atoi(v));
-        } else if(strcmp("input_name",k) == 0){
-            yolo->inputName(v);
-        }else if(strcmp("box_thr",k) == 0){
-            yolo->boxThreshold(atof(v));
-        }else if(strcmp("iou_thr",k) == 0){
-            yolo->iouThreshold(atof(v));
-        }else if(strcmp("output_name",k) == 0){
-            yolo->outputName(v);
-        }else if(strcmp("output_stride",k) == 0){
-            yolo->outputStride(atoi(v));
-        }else if(strcmp("output_anchors",k) == 0){
-            const std::vector<std::string> &as = split(v, ",");
-            ncnn::Mat anchors(as.size());
-            for(int i=0;i<as.size();i++)anchors[i]=atoi(as[i].data());
-            yolo->outputAnchors(anchors);
-        }else if(strcmp("nkpt",k) == 0){
-            yolo->numKeypoint(atoi(v));
-        }else if(strcmp(k,"ver") == 0) {
-            yolo->ver(atoi(v));
-        }else if(strcmp(k,"kp_thr") == 0) {
-            yolo->kpThreshold(atof(v));
-        }else{
-            LOGE("Unknown k=%s, v=%s",k,v);
-        }
+        LOGE("Unknown k=%s, v=%s",k,v);
     }
     env->ReleaseStringUTFChars(key,k);
     env->ReleaseStringUTFChars(value,v);

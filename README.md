@@ -13,7 +13,7 @@
 
 3 edit app/build.gradle
 ```
-implementation files('libs/yolo_mobile_release_2023xxyyzz_V1.0r1.aar')
+implementation files('libs/yolo_mobile_release_xxxxyyzz_v.*.aar')
 ```
 
 4 put ncnn .bin and .param into assets directory
@@ -82,7 +82,7 @@ Optional key value:
 ```
 
 # Demo
- Download demo [apk](https://github.com/wkt/YoloMobile/releases/download/v1.0.2r3/app-debug.apk)
+ Download demo [apk](https://github.com/wkt/YoloMobile/releases/download/v1.0.3r5/YoloMobileDebug_20240816_v1.0.1r2.apk)
  
  Screenshot:
  <img src="images/20230918_214448.png">

@@ -15,7 +15,7 @@
 
 3 编辑app/build.gradle, 添加
 ```
-implementation files('libs/yolo_mobile_release_2023xxyyzz_V1.0r1.aar')
+implementation files('libs/yolo_mobile_release_xxxxyyzz_v.*.aar')
 ```
 
 4 把ncnn格式模型文件.bin and .param放到assets目录下
@@ -83,7 +83,7 @@ implementation files('libs/yolo_mobile_release_2023xxyyzz_V1.0r1.aar')
 ```
 
 # 演示Demo
- 演示Demo的[apk](https://github.com/wkt/YoloMobile/releases/download/v1.0.2r3/app-debug.apk)
+ 演示Demo的[apk](https://github.com/wkt/YoloMobile/releases/download/v1.0.3r5/YoloMobileDebug_20240816_v1.0.1r2.apk)
  
  截图:
  <img src="images/20230918_214448.png">
